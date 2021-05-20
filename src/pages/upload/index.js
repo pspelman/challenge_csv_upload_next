@@ -11,7 +11,7 @@ const dealers = [
 		value: 1
 	},
 	{
-		label: 'North Hills Toyota',
+		label: 'East Side Toyota',
 		value: 2
 	},
 	{

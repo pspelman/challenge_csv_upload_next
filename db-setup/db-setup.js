@@ -23,7 +23,7 @@ const dealers = [
 		id: 1
 	},
 	{
-		name: 'North Hills Toyota',
+		name: 'East Side Toyota',
 		id: 2
 	},
 	{
