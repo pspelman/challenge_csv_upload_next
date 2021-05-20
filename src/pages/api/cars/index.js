@@ -9,7 +9,7 @@ const getDealerId = (req) => {
 	return dealerId
 }
 
-const handler = async (req, res) => {
+const requestHandler = async (req, res) => {
 	if (req.method === 'POST') {
 		// Process a POST request
 		console.log(`[cars/index.js] - processing a POST request`,)
@@ -85,7 +85,7 @@ const receiveCsv = (req, res) => {
 		file.pipe(csv.parse({headers: true}))
 			.on('data', async function (newRecord) {
 				console.log(`adding new request to dbQueries`,)
-				let newQuery = await addCarToDb(dealerId, newRecord)
+				let newQuery = await addCarToDb(dealerId, newRecord, dealerConfig)
 				return dbQueries.push(newQuery)
 			});
 
@@ -112,4 +112,4 @@ const receiveCsv = (req, res) => {
 	return "DONE DONE DONE"
 }
 
-export default handler
+export default requestHandler

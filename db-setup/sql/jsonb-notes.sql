@@ -11,7 +11,7 @@ UPDATE test SET data = jsonb_set(data, '{tags,1}', '"tag5"');
 UPDATE test SET data = jsonb_set(data, '{tags,999999999}', '"tag6"', true);
 
 -- Remove last tag
-UPDATE test SET data = data #- '{tags,-1}'
+UPDATE test SET data = data #- '{tags,-1}';
 
 -- Complex update (delete the last tag, insert a new tag, and change the name):
 UPDATE test SET data = jsonb_set(
