@@ -5,8 +5,13 @@ type Props = {
   children: ReactNode;
 };
 
+import Head from 'next/head';
+
 const Layout: React.FC<Props> = (props) => (
   <div>
+    <Head>
+      <link href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" rel="stylesheet" />
+    </Head>
     <Header />
     <div className="layout">{props.children}</div>
     <style jsx global>{`
