@@ -3,6 +3,7 @@ import Link from "next/link";
 import {useRouter} from "next/router";
 
 
+
 const Header: React.FC = () => {
 	const router = useRouter();
 	const isActive: (pathname: string) => boolean = (pathname) =>
@@ -20,8 +21,10 @@ const Header: React.FC = () => {
 					Vehicle Uploader
 				</a>
 			</Link>
+
 			<img className="ui small bordered image "
 			     src="https://lever-client-logos.s3.us-west-2.amazonaws.com/96736207-8baa-4f29-a0c4-b531f492b679-1617290863359.png"
+			     // src="/img/autofi-logo.svg"
 			     alt="autofi image"/>
 
 			<style jsx>{`

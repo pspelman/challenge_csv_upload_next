@@ -1,7 +1,7 @@
 // this file is only for examining behavior of local csv imports
 
 const fs = require('fs')
-const fileName = 'cars1.csv'
+const fileName = 'dealer3.csv'
 const parse = require('csv-parse')
 let imported
 const parser = parse({columns: false}, function (err, records) {

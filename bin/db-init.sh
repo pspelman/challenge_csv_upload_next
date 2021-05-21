@@ -8,3 +8,4 @@ source /workspace/env-init.sh
 echo "Running the DB setup script"
 node /workspace/db-setup/db-setup.js
 
+cd /workspace
