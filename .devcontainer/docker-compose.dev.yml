@@ -21,8 +21,8 @@ services:
 
     # Overrides default command so things don't shut down after the process ends.
     # command: . bin/db-init.sh
-    # command: sleep infinity
-    command: yarn start
+    command: sleep infinity
+    #    command: yarn start
 
     env_file:
       - ../.env.local
