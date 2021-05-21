@@ -52,14 +52,15 @@ const mapCols = (recObjData, config) => {
 					newRecord[tblDest] = recObjData[key]
 					break
 				case "date":
-					let newDate = moment(recObjData[key]).format("MM/DD/YYYY")
-					console.log(`making date: `, newDate)
-					newRecord[tblDest] = newDate
+					// let newDate = `'${moment(recObjData[key]).format("MM/DD/YYYY")}'`
+					// console.log(`making date: `, newDate)
+					const newDate = recObjData[key].replace("/", "-")
+					console.log(`putting in the newdate: `, newDate)
+					newRecord[tblDest] = `'${newDate}'`
 					break
 				default:
 					console.log(`${dataType} didn't match any you can use`, )
 					break
-
 			}
 			newRecord[tblDest] = dataType === "str" ? `'${recObjData[key]}'`: recObjData[key];
 		} else {
@@ -71,6 +72,9 @@ const mapCols = (recObjData, config) => {
 
 	return {newRecord, targetTables}
 }
+
+
+
 
 async function addCarToDb(dealerId, newData, dealerConfig) {
 
