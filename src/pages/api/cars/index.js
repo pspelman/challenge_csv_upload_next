@@ -33,16 +33,13 @@ const mapCols = (recObjData, config) => {
 	let originalKeys = Object.keys(recObjData)
 	let {dbMap} = config
 	let newRecord = {"custom": {}}
-	// console.log(`keys in the new data: `, originalKeys)
-	// console.log(`creating mapping | dbMap: `, dbMap)
 	const targetTables = new Set()  // keep track of the tables that are being targeted by this operation
 
 	// TODO: Add the ability to detect items that are part of different tables -- this will be less relevant after getting ORM setup
 	originalKeys.map((key) => {  // look up the key we got in the CSV with what it's matched to in the DB
 		if (key in dbMap) {
 			targetTables.add(destinationTable(dbMap[key]))
-			// TODO: consider how to determine to which table an unmapped key should be assigned - probably see if the main table used in the query has a custom or misc column
-			let tblDest = dbMap[key][0];
+			let tblDest = dbMap[key][0];  // TODO: consider how to determine to which table an unmapped key should be assigned - probably see if the main table used in the query has a custom or misc column
 			let dataType = dbMap[key][1]  // this is part of the config - either 'str' or 'num'
 			switch (dataType) {
 				case "str":
@@ -52,16 +49,13 @@ const mapCols = (recObjData, config) => {
 					newRecord[tblDest] = recObjData[key]
 					break
 				case "date":
-					// let newDate = `'${moment(recObjData[key]).format("MM/DD/YYYY")}'`
 					let newDate = recObjData[key].split("/").join("-");
-					console.log(`putting in the newdate: `, newDate)
 					newRecord[tblDest] = `'${newDate}'`
 					break
 				default:
 					console.log(`${dataType} didn't match any you can use`, )
 					break
 			}
-			// newRecord[tblDest] = dataType === "str" ? `'${recObjData[key]}'`: recObjData[key];
 		} else {
 			console.log(`${key} has no mapping --> adding to custom`,)
 			newRecord["custom"][key] = recObjData[key]

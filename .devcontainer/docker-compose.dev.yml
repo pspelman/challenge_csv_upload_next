@@ -3,7 +3,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
       args:
         # [Choice] Node.js version: 14, 12, 10
         VARIANT: 14

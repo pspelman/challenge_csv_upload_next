@@ -67,6 +67,7 @@ let obj = allHeaders.reduce((o, key) => ({...o, [key]: 'table.location'}), {})
 [comment]: <> (<details><summary><b>Show instructions</b></summary>)
 
 1. Open the project in VS Code
+- ensure you have Docker and Remote Containers extensions installed for VS Code
 
 2. Select the containers / docker tab and select Open the current folder in container or attach to running container
 

@@ -18,15 +18,27 @@ ARG NVM_VERSION='v0.37.2'
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
-RUN apt-get update && \
-    apt-get -y dist-upgrade && \
-    apt-get -y autoremove && \
-    apt-get clean all && \
-    apt-get install -y \
-    git \
-    curl \
+RUN export DEBIAN_FRONTEND=noninteractive \
+    && apt-get update \
+    && apt-get -y upgrade \
+    && apt-get -y install --no-install-recommends \
+    apt-utils \
     bash-completion \
-    netcat
+    build-essential \
+    cron \
+    curl \
+    gcc \
+    git \
+    htop \
+    libpq-dev \
+    nano \
+    netcat \
+    openssh-client \
+    postgresql-client \
+    sudo \
+    vim \
+    && rm -rf /var/cache/apt-get/* \
+    && rm -rf /var/lib/apt/lists/*
 
 
 # Install NVM and desired version of Node
