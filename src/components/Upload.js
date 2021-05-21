@@ -44,6 +44,13 @@ class FileUpload extends Component {
 		this.props.handleFileChosen(file)
 	}
 
+	doUpload() {
+		setTimeout(() => {
+			this.setState({fileSelected: null})
+		}, 300)
+		this.props.onFileUpload()
+	}
+
 	render() {
 		return (
 			<div className={'ui middle aligned center aligned grid'}>
@@ -58,8 +65,8 @@ class FileUpload extends Component {
 						/>
 						Select File
 					</label>
-					{this.state.fileSelected &&
-					<button onClick={this.props.onFileUpload}
+					{ this.state.fileSelected &&
+					<button onClick={() => this.doUpload()}
 					        className='ui secondary button'
 					>
 						Upload Now
@@ -69,6 +76,7 @@ class FileUpload extends Component {
 			</div>
 		)
 	}
+
 }
 
 export default FileUpload
