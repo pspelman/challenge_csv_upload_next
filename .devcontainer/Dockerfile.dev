@@ -54,7 +54,7 @@ WORKDIR /workspace
 
 # Copy React API project's requirements
 COPY ./package.json /workspace/package.json
-COPY / /workspace/
+COPY ./ /workspace/
 RUN ls -la /workspace/*
 
 # BUILD the app

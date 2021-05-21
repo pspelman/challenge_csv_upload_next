@@ -26,6 +26,8 @@ then
   echo "PostgreSQL started"
 fi
 
+echo "Calling the ENV init script..."
+. /workspace/env-init.sh
 echo "Calling the DB init script..."
 . /workspace/bin/db-init.sh
 
