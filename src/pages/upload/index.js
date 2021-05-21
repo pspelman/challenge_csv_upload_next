@@ -99,11 +99,9 @@ const UploadPage = props => {
 	}
 
 	const handleFileChosen = (file) => {
-		console.log(`handling file chosen: `, file)
 		setRawFile(file)
 		const {name, lastModified, lastModifiedDate, type} = file
 		let newFileInfo = {name, lastModified, lastModifiedDate, type}
-		console.log(`new file info: `, newFileInfo)
 		// setFileInfo(newFileInfo)
 		fileReader = new FileReader()
 		fileReader.onloadend = () => handleFileRead(newFileInfo)
@@ -111,26 +109,18 @@ const UploadPage = props => {
 	}
 
 	const updateFileSelect = (data, errors, meta, fileProps) => {
-		console.log(`selected CSV!: `,)
-		console.log(`meta:`, meta)
-		console.log(`fileProps:`, fileProps)
 		// console.log(data, fileProps)
 		let newProps = {n_records: data.length, ...fileProps}
 		setCurrentFile(fileProps)
 		setFileInfo(newProps)
-		console.log(`current file: `, newProps)
-		// axios send to the endpoint
-		// check the file --
+		// console.log(`current file: `, newProps)
 	}
 	const handleFileSelect = (data, fileProps) => {
 		console.log(`selected CSV!: `,)
-		console.log(data, fileProps)
+		// console.log(data, fileProps)
 		let newProps = {n_records: data.length, ...fileProps}
 		setCurrentFile(fileProps)
 		setFileInfo(newProps)
-		console.log(`current file: `, newProps)
-		// axios send to the endpoint
-		// check the file --
 	}
 
 	return (
