@@ -3,6 +3,30 @@
 This project is based on a code challenge to create an API to which a user can `POST` a csv file. 
 <br>The file should contain any of a finite list of headers that are known for the user. The users headers should be mapped to the actual DB tables / columns
 
+# Local Development Setup - GET IT GOING LOCALLY
+[comment]: <> (<details><summary><b>Show instructions</b></summary>)
+
+1. Open the project in VS Code
+- ensure you have Docker and Remote Containers extensions installed for VS Code
+
+2. Select the containers / docker tab and select Open the current folder in container or attach to running container
+
+3. Open command line with `Ctrl + Shift + ~` and run the django project
+
+    ```bash
+    yarn dev
+    ```
+
+4. Run / Build the react project
+    - RUN (with auto-reload):
+    ```bash
+    /workspace/ $  yarn && yarn start
+    ```
+
+    - BUILD:
+    ```bash
+    /workspace/ $  yarn build
+    ```
 
 
 
@@ -62,28 +86,3 @@ let obj = allHeaders.reduce((o, key) => ({...o, [key]: 'table.location'}), {})
     - I would make futher improvements to the Dockerfile so that it could be deployed in a more robust environment
     - Making a dockerfile for prod, I'd start with an ubuntu base image and build it out
 
-## Local Development Setup
-
-[comment]: <> (<details><summary><b>Show instructions</b></summary>)
-
-1. Open the project in VS Code
-- ensure you have Docker and Remote Containers extensions installed for VS Code
-
-2. Select the containers / docker tab and select Open the current folder in container or attach to running container
-
-3. Open command line with `Ctrl + Shift + ~` and run the django project
-
-    ```bash
-    yarn dev
-    ```
-
-4. Run / Build the react project
-    - RUN (with auto-reload):
-    ```bash
-    /workspace/ $  yarn && yarn start
-    ```
-
-    - BUILD:
-    ```bash
-    /workspace/ $  yarn build
-    ```

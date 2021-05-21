@@ -2,37 +2,49 @@ version: "3.8"
 services:
   app:
     build:
-      context: .
-      dockerfile: Dockerfile.dev
+      context: ..
+      dockerfile: .devcontainer/Dockerfile.dev
       args:
-        # [Choice] Node.js version: 14, 12, 10
         VARIANT: 14
-        # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
         USER_UID: 1000
         USER_GID: 1000
+    ports:
+      - 3000:3000
+    # expose:
+    # - 3000
+    networks:
+      - bridge
 
     volumes:
       - ..:/workspace:cached
+    # - ..:/usr/src/app/
 
     # Overrides default command so things don't shut down after the process ends.
-    command: sleep infinity
+    # command: . bin/db-init.sh
+    # command: sleep infinity
+    command: yarn start
 
-    # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
-    network_mode: service:index
+    env_file:
+      - ../.env.local
+
+    # network_mode: service:db
     depends_on:
-      - index
+      - db
 
-    # Uncomment the next line to use a non-root user for all processes.
-    # user: node
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
 
-    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
-    # (Adding the "ports" property to this file will not forward from a Codespace.)
-
-  index:
+  db:
     image: postgres:latest
     restart: unless-stopped
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data/  # this will persist data beyond the life of the container
+    ports:
+      - 5432:5432
+    networks:
+      - bridge
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
@@ -40,38 +52,7 @@ services:
 
     # Add "forwardPorts": ["5432"] to **devcontainer.json** to forward PostgreSQL locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
-
+networks:
+  bridge:
 volumes:
   postgres-data:
-
-services:
-  web:
-    build:
-      context: ..
-      dockerfile: .vscontainer/Dockerfile
-    #      dockerfile: ""
-    volumes:
-      - ..:/usr/src/app/
-      - ..:/home/slycr:cached
-    ports:
-      - 8000:8000
-    env_file:
-      - ../.env.dev
-    command: python manage.py runserver 0.0.0.0:8000
-    depends_on:
-      - db
-    environment:
-      DJANGO_SUPERUSER_USERNAME: vs_dev
-      DJANGO_SUPERUSER_PASSWORD: vaporstream
-      DJANGO_SUPERUSER_EMAIL: vs_dev@vaporstream.com
-  db:
-    image: postgres:latest
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/  # this will persist data beyond the life of the container
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_DB: postgres
-      POSTGRES_PASSWORD: postgres
-
-volumes:
-  postgres_data:

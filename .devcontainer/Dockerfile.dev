@@ -1,14 +1,13 @@
 # This is only for the development environment to facilitate VS Code / Docker integration
-ARG VARIANT=3
-FROM mcr.microsoft.com/vscode/devcontainers/python:0-${VARIANT}
+ARG VARIANT=12
+FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:0-${VARIANT}
 
-# FROM python:3.9.1-slim-buster
+# Update args in docker-compose.yaml to set the UID/GID of the "node" user.
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+RUN if [ "$USER_GID" != "1000" ] || [ "$USER_UID" != "1000" ]; then groupmod --gid $USER_GID node && usermod --uid $USER_UID --gid $USER_GID node; fi
+
 LABEL author="Philip Spelman"
-
-# prevent from writing the pyc files - only makes sense if spawning python process one time
-ENV PYTHONDONTWRITEBYTECODE 1
-# prevents python from buffering the outputs
-ENV PYTHONUNBUFFERED 1
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
@@ -51,33 +50,41 @@ ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 RUN if [ "$USER_GID" != "1000" ] || [ "$USER_UID" != "1000" ]; then groupmod --gid $USER_GID vscode && usermod --uid $USER_UID --gid $USER_GID vscode; fi
 
-# Copy React API project's requirements
-COPY frontend/package.json /home/slycr/frontend/package.json
+WORKDIR /workspace
 
-# [Optional] If your requirements rarely change, uncomment this section to add them to the image.
-COPY requirements.txt /tmp/pip-tmp/
-RUN pip --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requirements.txt \
-    && rm -rf /tmp/pip-tmp
+# Copy React API project's requirements
+COPY ./package.json /workspace/package.json
+COPY / /workspace/
+RUN ls -la /workspace/*
 
 # BUILD the app
-WORKDIR /home/slycr/frontend
 RUN ["yarn", "install"]
-COPY ./frontend/ /home/slycr/frontend/
 RUN ["yarn", "build"]
 
-WORKDIR /home/slycr
-COPY . /home/slycr
+COPY . /workspace/
 
-ENV PORT=8000
-EXPOSE 8000
+ENV PORT=3000
+#EXPOSE 3000
+
+COPY ./env-init.sh /
+
+RUN chmod +x /env-init.sh
 
 COPY ./start.sh /
 RUN chmod +x /start.sh
+
 COPY ./entrypoint.dev.sh /
-
-# update the python path to make django-admin work correctly
-RUN export PYTHONPATH=$PYTHONPATH:/home/slycr/web/vsproj
-
 RUN chmod +x /entrypoint.dev.sh
 
 ENTRYPOINT ["/entrypoint.dev.sh"]
+
+EXPOSE 3000
+
+CMD ["yarn", "start"]
+
+# Next.js collects completely anonymous telemetry data about general usage.
+# Learn more here: https://nextjs.org/telemetry
+# Uncomment the following line in case you want to disable telemetry.
+# ENV NEXT_TELEMETRY_DISABLED 1
+
+#CMD ["yarn", "start"]

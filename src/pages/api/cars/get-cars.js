@@ -1,6 +1,6 @@
 import { NextApiHandler } from 'next'
 // import { query } from '../../lib/db'
-const db = require('../db')
+const db = require('../../../lib/db')
 
 
 const handler = async (_, res) => {
