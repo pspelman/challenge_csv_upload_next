@@ -54,9 +54,10 @@ const mapCols = (recObjData, config) => {
 				case "date":
 					// let newDate = `'${moment(recObjData[key]).format("MM/DD/YYYY")}'`
 					// console.log(`making date: `, newDate)
-					const newDate = recObjData[key].replace("/", "-")
+					let newDate = recObjData[key].replaceAll("/", "-")
 					console.log(`putting in the newdate: `, newDate)
-					newRecord[tblDest] = `'${newDate}'`
+					delete newRecord[tblDest]
+					newRecord[tblDest] = `"${recObjData[key].replaceAll("/", "-")}"`
 					break
 				default:
 					console.log(`${dataType} didn't match any you can use`, )
