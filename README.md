@@ -3,6 +3,18 @@
 This project is based on a code challenge to create an API to which a user can `POST` a csv file. 
 <br>The file should contain any of a finite list of headers that are known for the user. The users headers should be mapped to the actual DB tables / columns
 
+
+# FASTEST WAY TO GET UP AND RUNNING
+- Use Docker Compose
+    - navigate to the project root 
+    - git pull for any changes
+    - Run:
+        - `docker-compose -f .devcontainer/docker-compose.dev.yml up -d --build`
+    - when it is done building you should be able to navigate to http://localhost:3000 and see the project
+    - When you're DONE run:
+        - `docker-compose -f .devcontainer/docker-compose.dev.yml down`
+
+
 # Local Development Setup - GET IT GOING LOCALLY
 [comment]: <> (<details><summary><b>Show instructions</b></summary>)
 
