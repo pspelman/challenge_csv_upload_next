@@ -5,19 +5,19 @@ const db = require('../src/lib/db')
 let queryCmd = (dealerName) => `INSERT INTO dealer(name, config) values ('${dealerName}', '{
 "dbMap": {
 "allHeaders": ["UUID", "VIN", "YEAR", "MAKE", "MODEL", "MILEAGE", "YEAR", "PRICE", "ZIP CODE", "UPDATE DATE", "CREATE DATE"],
-"UUID": "car.extId",
-"YEAR": "car.year",
-"VIN": "car.vin",
-"MAKE": "car.make",
-"MODEL": "car.model",
-"MILEAGE": "car.mileage",
-"PRICE": "car.price",
-"ZIP CODE": "car.zip",
-"Zip_Code": "car.zip",
-"Update_Date": "car.updated",
-"UPDATE DATE": "car.updated",
-"CREATE DATE": "car.created",
-"Create_Date": "car.created"
+"UUID": ["car.extId", "str"],
+"YEAR": ["car.year", "num"],
+"VIN": ["car.vin", "str"],
+"MAKE": ["car.make", "str"],
+"MODEL": ["car.model", "str"],
+"MILEAGE": ["car.mileage", "num"],
+"PRICE": ["car.price", "num"],
+"ZIP CODE": ["car.zip", "str"],
+"Zip_Code": ["car.zip", "str"],
+"Update_Date": ["car.updated", "date"],
+"UPDATE DATE": ["car.updated", "date"],
+"CREATE DATE": ["car.created", "date"],
+"Create_Date": ["car.created", "date"]
 }
 }');`
 

@@ -1,0 +1,71 @@
+# This is only for the development environment to facilitate VS Code / Docker integration
+ARG VARIANT=3
+FROM mcr.microsoft.com/vscode/devcontainers/python:0-${VARIANT}
+
+# FROM python:3.9.1-slim-buster
+LABEL author="Philip Spelman"
+
+# prevent from writing the pyc files - only makes sense if spawning python process one time
+ENV PYTHONDONTWRITEBYTECODE 1
+# prevents python from buffering the outputs
+ENV PYTHONUNBUFFERED 1
+
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
+ARG NODE_VERSION='14.15.5'
+ARG NVM_DIR=/root
+ARG NVM_VERSION='v0.37.2'
+ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
+ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+
+RUN apt-get update && \
+    apt-get -y dist-upgrade && \
+    apt-get -y autoremove && \
+    apt-get clean all && \
+    apt-get install -y \
+    git \
+    curl \
+    bash-completion \
+    netcat
+
+
+# Install NVM and desired version of Node
+RUN curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_VERSION/install.sh" | bash \
+    && source $NVM_DIR/nvm.sh \
+    && nvm install $NODE_VERSION
+
+# Update args in docker-compose.yaml to set the UID/GID of the "vscode" user.
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+RUN if [ "$USER_GID" != "1000" ] || [ "$USER_UID" != "1000" ]; then groupmod --gid $USER_GID vscode && usermod --uid $USER_UID --gid $USER_GID vscode; fi
+
+# Copy React API project's requirements
+COPY frontend/package.json /home/slycr/frontend/package.json
+
+# [Optional] If your requirements rarely change, uncomment this section to add them to the image.
+COPY requirements.txt /tmp/pip-tmp/
+RUN pip --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requirements.txt \
+    && rm -rf /tmp/pip-tmp
+
+# BUILD the app
+WORKDIR /home/slycr/frontend
+RUN ["yarn", "install"]
+COPY ./frontend/ /home/slycr/frontend/
+RUN ["yarn", "build"]
+
+WORKDIR /home/slycr
+COPY . /home/slycr
+
+ENV PORT=8000
+EXPOSE 8000
+
+COPY ./start.sh /
+RUN chmod +x /start.sh
+COPY ./entrypoint.dev.sh /
+
+# update the python path to make django-admin work correctly
+RUN export PYTHONPATH=$PYTHONPATH:/home/slycr/web/vsproj
+
+RUN chmod +x /entrypoint.dev.sh
+
+ENTRYPOINT ["/entrypoint.dev.sh"]
