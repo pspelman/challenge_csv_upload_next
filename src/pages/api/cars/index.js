@@ -63,7 +63,7 @@ const mapCols = (recObjData, config) => {
 					console.log(`${dataType} didn't match any you can use`, )
 					break
 			}
-			newRecord[tblDest] = dataType === "str" ? `'${recObjData[key]}'`: recObjData[key];
+			// newRecord[tblDest] = dataType === "str" ? `'${recObjData[key]}'`: recObjData[key];
 		} else {
 			console.log(`${key} has no mapping --> adding to custom`,)
 			newRecord["custom"][key] = recObjData[key]
